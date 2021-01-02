@@ -5,9 +5,9 @@
 
 > TODO: Alexa Responses customisation through the web page to be implemented.
 
-# Create an Alexa Radio Skill in 5 Minutes
+# Create an Alexa Video Skill in 5 Minutes
 
-Create your own Alexa Radio Skill with your favourite streaming stations. Once deployed, you can say `Alexa, open radio` and Alexa will start streaming your custom streaming station. 
+Create your own Alexa Video Skill with your favourite streaming stations. Once deployed, you can say `Alexa, open radio` and Alexa will start streaming your custom streaming station. 
 
 You can also ask Alexa for a channel or a station by name. If you say Alexa, ask radio to play Blues, the skill will first search for a channel and then the stations. If a channel is found, a random station from that channel is played.
 
@@ -15,7 +15,7 @@ You can also ask Alexa for a channel or a station by name. If you say Alexa, ask
 
 - A responsive web page to add and delete your channels and stations.
 - Alexa responses can be customized using the web page. Change what the skill says for Now playing, Next etc. Change them as often as you wish. 
-- Support for audiobooks. If the streaming link is an MP3 file, progress is saved. If your channel contains multiple MP3 files, the skill wil queue up the next file automatically (If shuffle is off)
+- Support for audiobooks. If the streaming link is an MP4 file, progress is saved. If your channel contains multiple MP4 files, the skill wil queue up the next file automatically (If shuffle is off)
 - Alexa Interaction model updated to use a custom slot. You can search by channel or station name
 
 Check out the web page demo [here](https://balsimpson.github.io/alexa-radio/).
@@ -48,7 +48,7 @@ Now click on the **dev** button to see all the endpoints your project has deploy
 
  Go to developer.amazon.com to create a new Alexa Skill. If you haven't signed up for an Amazon Developer account yet, do so now. Once logged in, you should see the **Create Skill** button.
 
-![Screenshot 4](https://cdn-images-1.medium.com/max/1600/1*jaNopqvSGVexxVfs08VsWA.png "Screenshot 4")
+![Screenshot 4](./data/tutorial/Screenshot5.png?raw=true "Screenshot 4")
 
 
 Give your skill a name like *radio* and choose your Default Language. Choose **Custom** for model to add to your skill and click on **Create Skill**.
@@ -93,7 +93,7 @@ Once you get the pop-up saying that the **Build Succeeded**, click on the **Test
 
 You should get a reply asking you to go to the web page to add your stations. Let's do that now. Go to your main stdlib URL, which is the first URL noted below.
 
-![Screenshot 3](./data/tutorial/Screenshot4.png?raw=true "Screenshot 3")
+![Screenshot 4](./data/tutorial/Screenshot4.png?raw=true "Screenshot 3")
 
 ***
 
