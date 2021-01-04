@@ -2,10 +2,19 @@
     "interactionModel": {
         "languageModel": {
             "invocationName": "radio",
+            "modelConfiguration": {
+                "fallbackIntentSensitivity": {
+                    "level": "LOW"
+                }
+            },
             "intents": [
                 {
                     "name": "AMAZON.CancelIntent",
-                    "samples": []
+                    "samples": [
+                        "cancel",
+                        "stop",
+                        "exit"
+                    ]
                 },
                 {
                     "name": "AMAZON.HelpIntent",
@@ -63,10 +72,6 @@
                     ]
                 },
                 {
-                    "name": "AMAZON.NextIntent",
-                    "samples": []
-                },
-                {
                     "name": "AMAZON.NavigateHomeIntent",
                     "samples": []
                 },
@@ -76,42 +81,6 @@
                 },
                 {
                     "name": "AMAZON.ShuffleOnIntent",
-                    "samples": []
-                },
-                {
-                    "name": "AMAZON.MoreIntent",
-                    "samples": []
-                },
-                {
-                    "name": "AMAZON.NavigateSettingsIntent",
-                    "samples": []
-                },
-                {
-                    "name": "AMAZON.PageUpIntent",
-                    "samples": []
-                },
-                {
-                    "name": "AMAZON.PageDownIntent",
-                    "samples": []
-                },
-                {
-                    "name": "AMAZON.PreviousIntent",
-                    "samples": []
-                },
-                {
-                    "name": "AMAZON.ScrollRightIntent",
-                    "samples": []
-                },
-                {
-                    "name": "AMAZON.ScrollDownIntent",
-                    "samples": []
-                },
-                {
-                    "name": "AMAZON.ScrollLeftIntent",
-                    "samples": []
-                },
-                {
-                    "name": "AMAZON.ScrollUpIntent",
                     "samples": []
                 },
                 {
@@ -138,122 +107,284 @@
                     "values": [
                         {
                             "name": {
-                                "value": "fountain"
+                                "value": "nine",
+                                "synonyms": [
+                                    "channel 9, channel nine, 9"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "suspended fed strongly room"
+                                "value": "9rush",
+                                "synonyms": [
+                                    "rush",
+                                    "nine flush",
+                                    "nine rush"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "great area briefly force"
+                                "value": "ABC Comedy",
+                                "synonyms": [
+                                    "a b c comedy"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "frequent treat little ban"
+                                "value": "NITV",
+                                "synonyms": [
+                                    "N I TV"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "size finishing"
+                                "value": "RACING.COM",
+                                "synonyms": [
+                                    "racing",
+                                    "racing dot com"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "previous black"
+                                "value": "Fox Sports News",
+                                "synonyms": [
+                                    "Sports News",
+                                    "Fox Sports"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "optional march"
+                                "value": "Redbull TV",
+                                "synonyms": [
+                                    "Red Bull",
+                                    "Redbull"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "revealed emphasis"
+                                "value": "SBS World Movies",
+                                "synonyms": [
+                                    "world",
+                                    "movies",
+                                    "s b s world",
+                                    "world movies hd",
+                                    "world movies"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "12",
+                            "name": {
+                                "value": "10 Bold",
+                                "synonyms": [
+                                    "bold",
+                                    "ten old"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "11",
+                            "name": {
+                                "value": "10 Peach",
+                                "synonyms": [
+                                    "peach",
+                                    "10 each"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "76",
+                            "name": {
+                                "value": "7flix",
+                                "synonyms": [
+                                    "seven flicks",
+                                    "flicks",
+                                    "seven flix"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "74",
+                            "name": {
+                                "value": "7food network",
+                                "synonyms": [
+                                    "food network",
+                                    "7 food",
+                                    "seven food hd",
+                                    "seven food"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "73",
+                            "name": {
+                                "value": "7mate",
+                                "synonyms": [
+                                    "seven ate",
+                                    "seven mate"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "72",
+                            "name": {
+                                "value": "7TWO",
+                                "synonyms": [
+                                    "seven TWO"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "92",
+                            "name": {
+                                "value": "9Gem",
+                                "synonyms": [
+                                    "nine gen",
+                                    "nine Gem"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "93",
+                            "name": {
+                                "value": "9Go!",
+                                "synonyms": [
+                                    "nine oh",
+                                    "nine Go"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "94",
+                            "name": {
+                                "value": "9Life",
+                                "synonyms": [
+                                    "nine live",
+                                    "9 live",
+                                    "nine Life"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "2",
+                            "name": {
+                                "value": "ABC",
+                                "synonyms": [
+                                    "channel two",
+                                    "channel abc",
+                                    "a b c"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "22",
+                            "name": {
+                                "value": "ABC KIDS",
+                                "synonyms": [
+                                    "ABC two",
+                                    "A b c kids"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "23",
+                            "name": {
+                                "value": "ABC ME",
+                                "synonyms": [
+                                    "ABC m e",
+                                    "a b c m e",
+                                    "A b c me"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "24",
+                            "name": {
+                                "value": "ABC NEWS",
+                                "synonyms": [
+                                    "a b c news 24",
+                                    "A b c news"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "away chain"
+                                "value": "Outdoor Channel",
+                                "synonyms": [
+                                    "outdoors",
+                                    "outdoor"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "standing twelve"
+                                "value": "PAC-12",
+                                "synonyms": [
+                                    "pac twelve",
+                                    "P A C 12",
+                                    "PAC 12"
+                                ]
                             }
                         },
                         {
+                            "id": "3",
                             "name": {
-                                "value": "head independent"
+                                "value": "SBS",
+                                "synonyms": [
+                                    "s. p. s., p.s, b. s.",
+                                    "sps, s p s",
+                                    "s b s",
+                                    "channel 3",
+                                    "channel sbs"
+                                ]
                             }
                         },
                         {
+                            "id": "33",
                             "name": {
-                                "value": "commercial defining"
+                                "value": "SBS Food",
+                                "synonyms": [
+                                    "S B S Food"
+                                ]
                             }
                         },
                         {
+                            "id": "32",
                             "name": {
-                                "value": "upset horse"
+                                "value": "SBS VICELAND HD",
+                                "synonyms": [
+                                    "viceland",
+                                    "S B S viceland hd",
+                                    "S B S viceland",
+                                    "sbs viceland"
+                                ]
                             }
                         },
                         {
+                            "id": "7",
                             "name": {
-                                "value": "entitled stay"
+                                "value": "Seven",
+                                "synonyms": [
+                                    "seven network",
+                                    "channel seven"
+                                ]
                             }
                         },
                         {
+                            "id": "10",
                             "name": {
-                                "value": "typed ease"
-                            }
-                        },
-                        {
-                            "name": {
-                                "value": "taking comment advice"
-                            }
-                        },
-                        {
-                            "name": {
-                                "value": "implemented small hour"
-                            }
-                        },
-                        {
-                            "name": {
-                                "value": "excess background favor"
-                            }
-                        },
-                        {
-                            "name": {
-                                "value": "leading extract square"
-                            }
-                        },
-                        {
-                            "name": {
-                                "value": "removed white summary"
-                            }
-                        },
-                        {
-                            "name": {
-                                "value": "state old post"
-                            }
-                        },
-                        {
-                            "name": {
-                                "value": "diverse international parity"
-                            }
-                        },
-                        {
-                            "name": {
-                                "value": "thorough reserve forecast"
-                            }
-                        },
-                        {
-                            "name": {
-                                "value": "bla bla bla"
+                                "value": "TEN",
+                                "synonyms": [
+                                    "network ten",
+                                    "channel ten",
+                                    "10"
+                                ]
                             }
                         }
                     ]
