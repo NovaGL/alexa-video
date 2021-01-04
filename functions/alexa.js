@@ -92,17 +92,8 @@ class AlexaResponses {
     return this;
   }
 
-  stop() {
-    this.response.directives = [
-      {
-        "type": "AudioPlayer.Stop"
-      }
-    ]
-    this.response.shouldEndSession = true;
-    return this;
-  }
+playVideo(user_url, url, offset = 0, token) {
 
-  queue(user_url, url, offset, token, previous_token) {
     let station;
     let channel;
 
@@ -113,42 +104,57 @@ class AlexaResponses {
       token = " "
     }
 
-    if (offset == undefined) {
+    this.response.directives = [
+      {
+        "type": "VideoApp.Launch",
+        "videoItem": {
+          "source": `${url}`,
+          "metadata": {
+            "title": station,
+            "subtitle": channel
+          }
+        }
+      }
+    ]
+    return this;
+  }
+  stop() {
+    this.response.directives = [
+      {
+        "type": "AudioPlayer.Stop"
+      }
+    ]
+    this.response.shouldEndSession = true;
+    return this;
+  }
+
+  queueVideo(user_url, url, offset, token, previous_token) {
+    let station;
+    let channel;
+
+    if (token) {
+      station = token.split(':')[0];
+      channel = token.split(':')[1];
+    } else {
+      token = " "
+    }
+
+    if (offset === undefined) {
       offset = 0
     }
 
-    if (previous_token == undefined) {
+    if (previous_token === undefined) {
       previous_token = token
     }
 
     this.response.directives = [
       {
-        "type": "AudioPlayer.Play",
-        "playBehavior": "ENQUEUE",
-        "audioItem": {
-          "stream": {
-            "url": url,
-            "token": token,
-            "expectedPreviousToken": previous_token,
-            "offsetInMilliseconds": offset
-          },
+        "type": "VideoApp.Launch",
+        "videoItem": {
+          "source": `${url}`,
           "metadata": {
             "title": station,
-            "subtitle": channel,
-            "art": {
-              "sources": [
-                {
-                  "url": `${user_url}assets?asset=station`
-                }
-              ]
-            },
-            "backgroundImage": {
-              "sources": [
-                {
-                  "url": `${user_url}assets?asset=background`
-                }
-              ]
-            }
+            "subtitle": channel
           }
         }
       }
@@ -156,6 +162,61 @@ class AlexaResponses {
 
     return this;
   }
+  
+queue(user_url, url, offset, token, previous_token) {
+        let station;
+        let channel;
+
+        if (token) {
+            station = token.split(':')[0];
+            channel = token.split(':')[1];
+        } else {
+            token = " "
+        }
+
+        if (offset === undefined) {
+            offset = 0
+        }
+
+        if (previous_token === undefined) {
+            previous_token = token
+        }
+
+        this.response.directives = [
+            {
+                "type": "AudioPlayer.Play",
+                "playBehavior": "ENQUEUE",
+                "audioItem": {
+                    "stream": {
+                        "url": url,
+                        "token": token,
+                        "expectedPreviousToken": previous_token,
+                        "offsetInMilliseconds": offset
+                    },
+                    "metadata": {
+                        "title": station,
+                        "subtitle": channel,
+                        "art": {
+                            "sources": [
+                                {
+                                    "url": `${user_url}assets?asset=station`
+                                }
+                            ]
+                        },
+                        "backgroundImage": {
+                            "sources": [
+                                {
+                                    "url": `${user_url}assets?asset=background`
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ]
+
+        return this;
+    }  
 }
 
 class Collection {
@@ -178,7 +239,7 @@ class Collection {
           'Next up is'
         ],
         stop_playing: [
-          'Goodbye'
+         // 'Goodbye'
         ],
         error_playing: [
           'Somethng went wrong'
@@ -293,7 +354,7 @@ class Collection {
 
       if (channel) {
         channel.items.map((_item, index) => {
-          if (_item.name == token.split(':')[0]) {
+          if (_item.name === token.split(':')[0]) {
             // check shuffle
             if (channel.shuffle) {
               item = randomItem(channel.items);
@@ -424,17 +485,25 @@ const LaunchRequestIntentHandler = async (requestEnvelope) => {
   let now_playing = collection.response('playing');
   let station = collection.get();
 
-  if (station.name) {
-    Alexa
-      .speak(`${now_playing} - ${station.name}, from ${station.channel}.`)
-      .card(station.name, station.channel, `${user_url}assets?asset=background`)
-      .play(user_url, station.url, station.progress, station.token)
-    // save session attributes
-    Alexa.sessionAttributes = { token: station };
 
+  if (station.name) {
+    if (requestEnvelope.context.System.device.supportedInterfaces.VideoApp) {
+      station.type = 'video';
+      Alexa
+        .speak(`${now_playing} - ${station.name}, from ${station.channel}.`)
+        .playVideo(user_url, station.url, station.progress, station.token)
+    } else {
+      station.type = 'audio';
+      Alexa
+        .speak(`${now_playing} - ${station.name}, from ${station.channel}.`)
+        .play(user_url, station.url, station.progress, station.token)
+    }
+
+    // save session attributes
+     Alexa.sessionAttributes = { token: station };
   } else {
-    // If no station found, prompt to add channel
-    Alexa.speak(`You don't have any saved channels. Go to web page to add a channel.`);
+    // If no station found, prompt to add channel    
+    Alexa.speak(`You don't have any saved channels. Go to the web page to add a channel.`);
   }
 
   return Alexa;
@@ -516,12 +585,18 @@ const PlayRadioIntentHandler = async (requestEnvelope) => {
       let now_playing = collection.response('playing');
       let slot = getSlotValues(requestEnvelope);
       let station = collection.get(slot.station);
-
+      if (requestEnvelope.context.System.device.supportedInterfaces.VideoApp) {
+         station.type = 'video'
+      } else {
+         station.type = 'audio'
+      }
       if (station.name) {
-        Alexa.sessionAttributes = { token: station };
-        Alexa
-          .speak(`${now_playing} ${station.name} from ${station.channel}.`)
-          .play(user_url, station.url, station.progress, station.token)
+        Alexa.speak(`${now_playing} ${station.name} from ${station.channel}.`)
+       if (station.type === 'video'){
+            Alexa.playVideo(user_url, station.url, station.progress, station.token)
+       } else {
+             Alexa.play(user_url, station.url, station.progress, station.token)
+           }
       } else if (station === 'not found') {
         Alexa
           .speak(`Sorry, ${slot.station} was not found`);
@@ -542,25 +617,39 @@ const PlayRadioIntentHandler = async (requestEnvelope) => {
 }
 
 const StopIntentHandler = (requestEnvelope) => {
-
-  Alexa
-    .speak(collection.response('stop'))
-    .stop();
-
+  Alexa.stop();
   return Alexa;
 }
 
+const PauseIntentHandler = (requestEnvelope) => {
+  Alexa.pause();
+  return Alexa;
+}
 const NextIntentHandler = async (requestEnvelope) => {
-
-  // let next_playing = speech('next');
+   // let next_playing = speech('next');
   try {
-    let token = requestEnvelope.context.AudioPlayer.token;
+
+    let token
+    let type = ""
+    if (typeof requestEnvelope.session.attributes !== "undefined")
+     {
+        token = requestEnvelope.session.attributes.token.token;
+        type = requestEnvelope.session.attributes.token.type;
+      } else {
+        console.log("no token found")
+        Alexa
+          .speak(`There is nothing to play next.`);
+          return Alexa;
+      }
     let next_item = collection.next(token);
 
     if (next_item) {
-      Alexa
-        .speak(`Next up is ${next_item.name}`)
-        .play(user_url, next_item.url, next_item.progress, next_item.token);
+        Alexa.speak(`Next up is ${next_item.name}`)
+        if (type === 'video'){
+            Alexa.playVideo(user_url, next_item.url, next_item.progress, next_item.token);
+       } else {
+            Alexa.play(user_url, next_item.url, next_item.progress, next_item.token);  
+          }
     } else {
       Alexa
         .speak(`There is nothing to play next.`);
@@ -666,7 +755,15 @@ const AudioPlayerEventHandler = async (requestEnvelope) => {
       let station = collection.next(token);
       if (station.name) {
         station.token = `${station.name}:${station.channel}`;
-        Alexa.queue(user_url, station.url, station.progress, station.token, token);
+
+        if (typeof requestEnvelope.context.AudioPlayer) {
+          // audio
+            Alexa.queue(user_url, station.url, station.progress, station.token, token);
+        } else {
+          //video
+            console.log ("video")
+            Alexa.queueVideo(user_url, station.url, station.progress, station.token, token);      
+        }
       } else {
         console.log("PlaybackNearlyFinished - ", token + ": Next station not found");
       }
@@ -782,7 +879,6 @@ module.exports = async (context) => {
       // let intent = requestEnvelope.request.intent || {};
 
       let response = {};
-
       // console.log("requestType", requestType);
       if (requestType === 'LaunchRequest') {
         response = await LaunchRequestIntentHandler(requestEnvelope);
